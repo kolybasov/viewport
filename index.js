@@ -11,6 +11,14 @@ var win = window;
 var doc = win.document;
 var docEl = doc.documentElement;
 
+// Safari do not support screen orientation API
+// https://developer.mozilla.org/en-US/docs/Web/API/Screen/orientation#Browser_compatibility
+function getOrientationType() {
+  return win.screen.orientation
+    ? win.screen.orientation.type
+    : 'landscape-primary';
+}
+
 /**
  * Viewport class
  */
@@ -57,7 +65,7 @@ Viewport.prototype.calculateDeviceDimensions = function calculateDeviceDimension
   this.device = {};
   this.device.height = win.screen.height;
   this.device.width = win.screen.width;
-  this.device.orientation = win.screen.orientation.type;
+  this.device.orientation = getOrientationType();
   return this;
 };
 
@@ -106,7 +114,7 @@ Viewport.prototype.calculateOffset = function calculateOffset() {
  * Returns the device orientation: `portrait-primary`, `portrait-secondary`, `landscape-primary`, `landscape-secondary`.
  */
 Viewport.prototype.calculateOrientation = function calculateOrientation() {
-  this.device.orientation = win.screen.orientation.type;
+  this.device.orientation = getOrientationType();
   return this;
 };
 
